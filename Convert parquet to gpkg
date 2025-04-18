@@ -1,0 +1,24 @@
+# Make sure you have geopandas installed via [pip install geopandas]
+
+import os
+import pandas as pd
+import geopandas as gpd
+from shapely.wkb import loads as wkb_loads
+
+# File paths
+input_file = "/Users/andyzhang/Documents/Work/ValueBase/2025-01-15 Convert/travis_raw_land_prediction_with_breakdowns/travis_raw_land_predictions.parquet"
+output_file = os.path.splitext(input_file)[0] + ".gpkg"
+
+# Step 1: Load the Parquet file
+df = pd.read_parquet(input_file)
+
+# Step 2: Convert WKB to geometries
+df['geometry'] = df['geometry'].apply(wkb_loads)
+
+# Step 3: Create a GeoDataFrame
+gdf = gpd.GeoDataFrame(df, geometry='geometry', crs="EPSG:4326")  # Adjust CRS if needed
+
+# Step 4: Save as GeoPackage
+gdf.to_file(output_file, driver="GPKG")
+
+print(f"GeoPackage saved to {output_file}")
