@@ -1,0 +1,22 @@
+import os
+import pandas as pd
+
+# Define the folder path
+folder_path = '/Users/andyzhang/Library/CloudStorage/GoogleDrive-andy@valuebase.co/Shared drives/Customer/Customers By State/KY/Warren County PVA/Modeling/Data/[EXT] Data In (Warren County PVA, KY)/2025/2025-04-18'
+
+# Get all files in the directory
+file_names = [f for f in os.listdir(folder_path) if f.endswith('.xlsx')]
+
+# Iterate through each file and print the file name and columns
+for file_name in file_names:
+    file_path = os.path.join(folder_path, file_name)
+    try:
+        # Read the Excel file
+        df = pd.read_excel(file_path)
+        
+        # Print the file name and the columns
+        print(f"File: {file_name}")
+        print("Columns:", df.columns.tolist())
+        print("-" * 40)  # Separator for better readability
+    except Exception as e:
+        print(f"Error reading {file_name}: {e}")
